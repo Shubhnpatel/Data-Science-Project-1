@@ -7,6 +7,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
 
+from src.components.data_transformation import DataTransformation,DataTransformationConfig
+
 # any input or any thing is required in the data ingestion we will use this class 
 @dataclass # using this we can directly define the variable in class without using init
 # if you are just defining variable inside the class then we can use the dataclass but if we are defining the functions also then we should nnot use that instead of that we can use the init method 
@@ -46,4 +48,8 @@ class DataIngestion:
 
 if __name__ == "__main__":
     obj = DataIngestion()
-    obj.initiate_data_ingestion()
+    train_data , test_data = obj.initiate_data_ingestion()
+    
+    data_transformation = DataTransformation()
+    data_transformation.initiate_data_transformation(train_data,test_data)
+    
