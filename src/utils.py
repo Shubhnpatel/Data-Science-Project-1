@@ -5,6 +5,9 @@ import dill
 import numpy as np 
 import pandas as pd 
 
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score
+
 from src.exception import CustomException
 
 def save_object(file_path , obj):
@@ -17,4 +20,27 @@ def save_object(file_path , obj):
             dill.dump(obj,file_obj)
     
     except Exception as e:
+        raise CustomException(e,sys)
+    
+
+
+def evaluate_models(xTrain , yTrain , xTest , yTest , models ):
+    try:
+        
+        report = {}
+
+        for i in range (len(list(models))):
+            model = list(models.values())[i]
+            model.fit(xTrain,yTrain) 
+            yTrainPred = model.predict(xTrain)
+            yTestPred =  model.predict(xTest)
+
+            train_model_score = r2_score(yTrain , yTrainPred)
+            test_model_score = r2_score(yTest , yTestPred)
+
+            report[list(models.keys())[i]] = test_model_score
+        
+        return report
+
+    except Exception as e :
         raise CustomException(e,sys)
